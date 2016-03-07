@@ -1,0 +1,27 @@
+<html>
+<head>
+    <script type='text/javascript' src='../bower_components/jquery/dist/jquery.js'></script>
+    <script type='text/javascript' src='../bower_components/bootstrap/dist/js/bootstrap.js'></script>
+    <script type='text/javascript' src='../bootdialog.js'></script>
+    <link rel='stylesheet' type='text/css' href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+</head>
+<body>
+    <div class='container'>
+        <button type='button' id='alert' class='btn btn-default'>alert</button>
+    </div>
+
+    <script type='text/javascript'>
+        $(document).ready(function(){
+            $('#alert').click(function(){
+                bootdialog.alert({
+                    title: 'test',
+                    message: 'ALERT!'
+                })
+                .done(function(){
+                    alert('done!');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

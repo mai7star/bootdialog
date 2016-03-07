@@ -1,0 +1,29 @@
+{
+  "name": "bootdialog",
+  "homepage": "https://github.com/mai7star/bootdialog",
+  "authors": [
+    "Hiroyuki Toda <mai7star@gmail.com>"
+  ],
+  "description": "",
+  "main": "bootdialog.js",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "bootstrap",
+    "dialog",
+    "modal"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.1",
+    "bootstrap": "~3.3.6"
+  }
+}
