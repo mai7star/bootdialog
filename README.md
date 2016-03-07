@@ -1,0 +1,2 @@
+# bootdialog
+Bootstapベースのダイアログボックス生成ライブラリ。bootboxからの派生ライブラリ。
