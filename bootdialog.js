@@ -8,12 +8,15 @@
 
     if (typeof define === "function" && define.amd) {
         // AMD. Register as an anonymous module.
-        define(["jquery"], factory);
+        define(["jquery", 'bootstrap', 'underscore', 'bootstrap.validator'], factory);
 
     } else if (typeof exports === "object") {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
+        require("boostrap");
+        require("underscore");
+        require("bootstrap.validator");
         module.exports = factory(require("jquery"));
 
     } else {
@@ -92,7 +95,7 @@
         // additional class string applied to the top level dialog
         className: null,
         // whether or not to include a close button
-        closeButton: true,
+        closeButton: false,
         // whether or not to enable ESC key
         escKey: true,
         // dialog container
@@ -159,7 +162,7 @@
         if($.isFunction(data)){
             data = data();
         }
-        if(typeof data == 'object'){
+        if(typeof data == 'object' && $.isFunction(data.promise)){
             return data;
         }
 
