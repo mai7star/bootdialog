@@ -8,30 +8,34 @@
 
     if (typeof define === "function" && define.amd) {
         // AMD. Register as an anonymous module.
-        define(["jquery", 'bootstrap', 'underscore', 'bootstrap.validator'], factory);
+        define(["jquery", 'underscore', 'bootstrap', 'bootstrap.validator'], factory);
 
     } else if (typeof exports === "object") {
         // Node. Does not work with strict CommonJS, but
         // only CommonJS-like environments that support module.exports,
         // like Node.
         require("boostrap");
-        require("underscore");
         require("bootstrap.validator");
-        module.exports = factory(require("jquery"));
+        module.exports = factory(require("jquery"), require("underscore"));
 
     } else {
         // Browser globals (root is window)
-        root.bootdialog = factory(root.jQuery);
+        if(typeof root.jQuery === 'undefined'){
+            throw new Error(
+                "jquery is not loaded. Get jquery (https://jquery.com/) and load this on your script."
+            );
+        }
+        if(typeof _ === 'undefined'){
+            throw new Error(
+                "underscore is not loaded. Get underscore (http://underscorejs.org/) and load this on your script."
+            );
+        }
+
+        root.bootdialog = factory(root.jQuery, _);
     }
 
-}(this, function init($) {
+}(this, function init($, _) {
     "use strict";
-
-    if(typeof _ === 'undefined'){
-        throw new Error(
-            "underscore is not loaded. Get underscore (http://underscorejs.org/) and load this on your script."
-        );
-    }
 
     if($.fn.modal === undefined){
         throw new Error(
@@ -159,10 +163,10 @@
     };
 
     var makeDeferred = function(data){
-        if($.isFunction(data)){
+        if(_.isFunction(data)){
             data = data();
         }
-        if(typeof data == 'object' && $.isFunction(data.promise)){
+        if(typeof data == 'object' && _.isFunction(data.promise)){
             return data;
         }
 
@@ -176,7 +180,11 @@
         e.stopPropagation();
         e.preventDefault();
 
-        makeDeferred(callback.bind(null, e, dialog))
+        if(_.isFunction(callback)){
+            callback = callback(e, dialog);
+        }
+
+        makeDeferred(callback)
             .done(function(data){
                 dialog.modal('hide');
 
@@ -199,7 +207,7 @@
                 options.buttons = [{
                         label: 'OK',
                         className: 'btn-primary',
-                        callback: callback,
+                        callback: makeDeferred(callback),
                     }];
             }
 
@@ -221,7 +229,7 @@
                         cancel: true
                     }, {
                         label: 'OK',
-                        callback: callback,
+                        callback: makeDeferred(callback),
                     }];
             }
 
@@ -244,7 +252,7 @@
                     }, {
                         label: 'OK',
                         className: 'btn-danger',
-                        callback: callback,
+                        callback: makeDeferred(callback),
                     }];
             }
 
@@ -465,10 +473,7 @@
 
         sleep: function(duration, data){
             var d = $.Deferred();
-
-            setTimeout(function(){
-                d.resolve(data);
-            }, duration);
+            setTimeout(d.resolve.bind(null, data), duration);
 
             return d.promise();
         }

@@ -15,6 +15,7 @@
         <button type='button' id='prompt' class='btn btn-default'>prompt</button>
         <button type='button' id='wait' class='btn btn-default'>wait</button>
         <button type='button' id='form' class='btn btn-default'>form</button>
+        <button type='button' id='test1' class='btn btn-default'>test1</button>
     </div>
 
     <script type='text/template' id='form-body'>
@@ -114,6 +115,18 @@
                             email: $('#inputEmail3').val(),
                             pass: $('#inputPassword3').val(),
                         };
+                    }
+                })
+                .done(function(data){
+                    console.log(data);
+                });
+            });
+
+            $('#test1').click(function(){
+                bootdialog.confirm({
+                    message: 'confirm',
+                    callback: function(){
+                        return 'abc';
                     }
                 })
                 .done(function(data){
