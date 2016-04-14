@@ -45,48 +45,45 @@
         );
     }
 
-    var heardoc = function(doc){
-        var doc = doc.toString().replace(/(\n)/g, '').split('*')[1];
-        return _.template(doc, {
-            interpolate: /\{\{(.+?)\}\}/g
-        });
+    var tmpl = function(lines){
+        return _.template(lines.join(''), { interpolate: /\{\{(.+?)\}\}/g });
     };
 
     // the base DOM structure needed to create a modal
     var tmpls = {
         dialog:
-            heardoc(function(){/*
-                <div class='bootdialog modal {{classes}}' tabindex='-1' role='dialog' aria-hidden='true'>
-                    <div class='modal-dialog {{size}}'>
-                        <div class='modal-content'>
-                            <div class='modal-body'><div class='bootdialog-body'></div></div>
-                        </div>
-                    </div>
-                </div>
-            */}),
+            tmpl([
+                "<div class='bootdialog modal {{classes}}' tabindex='-1' role='dialog' aria-hidden='true'>",
+                    "<div class='modal-dialog {{size}}'>",
+                        "<div class='modal-content'>",
+                            "<div class='modal-body'><div class='bootdialog-body'></div></div>",
+                        "</div>",
+                    "</div>",
+                "</div>"
+            ]),
 
         header:
-            heardoc(function(){/*
-                <div class='modal-header'>
-                    <h4 class='modal-title'>{{body}}</h4>
-                </div>
-            */}),
+            tmpl([
+                "<div class='modal-header'>",
+                    "<h4 class='modal-title'>{{body}}</h4>",
+                "</div>"
+            ]),
 
         footer:
-            heardoc(function(){/* <div class='modal-footer'>{{body}}</div> */}),
+            tmpl(["<div class='modal-footer'>{{body}}</div>"]),
 
         button:
-            heardoc(function(){/* <button data-id='{{key}}' type='button' class='btn {{class_name}}'>{{label}}</button> */}),
+            tmpl(["<button data-id='{{key}}' type='button' class='btn {{class_name}}'>{{label}}</button>"]),
 
         closeButton:
             "<button type='button' class='bootdialog-close-button close' data-dismiss='modal' aria-hidden='true'>&times;</button>",
 
         prompt:
-            heardoc(function(){/*
-                <form class="form" role="form">
-                    <input class='bootdialog-input form-control' autocomplete='off' type='text' />
-                </form>
-            */})
+            tmpl([
+                "<form class='form' role='form'>",
+                    "<input class='bootdialog-input form-control' autocomplete='off' type='text' />",
+                "</form>"
+            ])
     };
 
     var defaults = {
